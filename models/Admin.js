@@ -30,9 +30,22 @@ var adminSchema = new Schema(
         password: {
             type: String, required: [true, 'Password required']
         },
+        //can be system admin or vendor admin
         type: {
             type: String, required: [true, 'Privilege required']
-        }
+        },
+        organizationName:{
+            type:String
+        },
+        contactName:{
+            type:String
+        },
+        contactPhone:{
+            type:String
+        },
+        address:{
+            type:String
+        } 
     },
     {
         collection: 'Admin'

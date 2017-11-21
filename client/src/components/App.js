@@ -5,10 +5,14 @@ import * as actions from '../actions';
 
 import Header from './Header';
 import Landing from './Landing';
-import adminDashboard from './adminDashboard';
+import AdminForm from './AdminForm';
+import UserForm from './UserForm';
+import Scan from './Scan';
+import Dashboard from './Dashboard';
 
-const DashBoard = () =><h2>DashBoard</h2>;
-const Users = () =><h2>Users</h2>;
+
+import Login from './Login';
+
 
 class App extends Component{
 	componentDidMount(){
@@ -22,8 +26,14 @@ class App extends Component{
 					<div>
 						<Header />
 						<Route exact path="/" component={Landing} />
-						<Route path="/dashboard/admin" component={adminDashboard} />
-						<Route path="/dashboard/admin/user" component={DashBoard} />
+						<Route exact path="/dashboard" component={Dashboard} />
+
+						{/* component for admin user management routes */}
+						<Route path="/dashboard/admin/:action" component={AdminForm} />
+						<Route path="/dashboard/user/:action" component={UserForm} />
+						<Route path="/dashboard/scan" component={Scan} />
+
+						<Route path="/login" component={Login}/>
 
 					</div>
 				</BrowserRouter>

@@ -11,19 +11,22 @@ const bodyParser = require('body-parser');
 
 // mongoose.Promise = global.Promise;
 // mongoose.connect(keys.mongoURI);
-
 const app = express();
-mongoose.connect('mongodb://admin:gaga2017@ds123361.mlab.com:23361/gagacrm');
+// mongoose.connect('mongodb://admin:gaga2017@ds123361.mlab.com:23361/gagacrm');
+mongoose.connect('mongodb://127.0.0.1:27017/gagacrm');
+app.set("trust proxy",1);
 const Admin = require('./models/Admin');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 app.use(cookieParser());
 
-app.use(bodyParser.json());
+
 app.use(
   cookieSession({
-    secret:'gagacrm',
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    keys: 'sessionId'
+    path:"/",
+    secret:'gaga\crm',
   })
 ); 
 
@@ -32,9 +35,10 @@ app.use(
   var adminUser = new Admin({
     email:"willzard.zhang@gmail.com",
     password:"gaga2017",
-    type:"admin"
+    type:"system",
+    name:"gagaAdmin"
     }); 
-  password = "gaga2017";
+  password = "gaga2017"; 
   adminUser.password = passwordHash.generate(password);
   Admin.findOneAndUpdate({email:adminUser.email}, {$set:{password:adminUser.password,type:adminUser.type}},{upsert:true},function(error, Admin) {
     
@@ -75,6 +79,11 @@ require('./routes/billingRoutes')(app);
 require('./routes/surveyRoutes')(app);
 */
 require('./routes/authRoutes')(app);
+require('./routes/adminRoutes')(app);
+require('./routes/userRoutes')(app);
+require('./routes/scanRoutes')(app);
+
+
 
 if (process.env.NODE_ENV === 'production') { 
   // Express will serve up production assets

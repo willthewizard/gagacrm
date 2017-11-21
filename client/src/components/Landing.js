@@ -1,12 +1,13 @@
 import React from 'react';
 
 const Landing = () =>{
+
 	return(
 		<div style= {{textAlign:'center'}}>
 			<h1>
-				Landing Page
+				来吧老铁！
 			</h1>
-			Stuff
+			
 		</div>
 	);
 

@@ -8,6 +8,9 @@
     "npm": "5.0.3"
   },
   "proxy": {
+    "/api/login": {
+      "target": "http://localhost:5000/api/login"
+    },
     "/api/*": {
       "target": "http://localhost:5000"
     }
