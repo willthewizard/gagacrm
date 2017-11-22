@@ -9,15 +9,12 @@ class Header extends Component{
 			case null:
 				return <a href="/login">Login</a>;
 			case false:			
-				console.log(this.props.auth);
 				return <a href="/login">Login</a>;
 			default:
-				console.log(this.props.auth);
 				return <a href="/api/logout">Logout</a>;
 		}
 	}
 	render(){
-		console.log(this.props);
 		return (
 			<nav>
 				<div className = "nav-wrapper">

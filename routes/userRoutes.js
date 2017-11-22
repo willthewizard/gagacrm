@@ -76,4 +76,19 @@ module.exports = app => {
         });
     });
 
+    app.get('/api/listAllUsers', (req, res) => {
+        if(req.session.type=="system"){
+                User.find({},function(err,results){
+                    if(err){
+                        console.log(err)
+                    }else{
+                        if(results.length==0){
+                            res.send({Success:false})
+                        }else{
+                            res.send({Success:true,userList:results})
+                        }            }
+                })
+        }
+    });
+    
 }

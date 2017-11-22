@@ -12,8 +12,8 @@ const bodyParser = require('body-parser');
 // mongoose.Promise = global.Promise;
 // mongoose.connect(keys.mongoURI);
 const app = express();
-mongoose.connect('mongodb://admin:gaga2017@ds151662.mlab.com:51662/gagacrm'); 
-// mongoose.connect('mongodb://127.0.0.1:27017/gagacrm');
+// mongoose.connect('mongodb://admin:gaga2017@ds151662.mlab.com:51662/gagacrm'); 
+mongoose.connect('mongodb://127.0.0.1:27017/gagacrm');
 app.set("trust proxy",1);
 const Admin = require('./models/Admin');
 

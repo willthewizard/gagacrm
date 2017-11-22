@@ -23,7 +23,8 @@ class UserForm extends Component{
             trvExpiry:"",
             usVisa:"true",
             userStatus:"",
-            referrer:""
+            referrer:"",
+            userList:[]
 
 
         }
@@ -39,7 +40,8 @@ class UserForm extends Component{
                 return this.createUserForm();
             case 'modify':
                 return this.workWithUser();
-            
+            case 'userList':
+                return this.userList();
         }
     }
 
@@ -58,9 +60,10 @@ class UserForm extends Component{
                 <a class = "waves-effect waves-light btn"
                     href = "/dashboard/user/create" >Create New User</a>
                 <a class = "waves-effect waves-light btn" href = "/dashboard/user/modify" >Working With Existing User</a>
+                <a class = "waves-effect waves-light btn" href = "/dashboard/user/userList" >List All Users</a>
 
             </nav>
-			<div name="userForm">
+			<div name="userForm" hidden={formProperties.userList}>
                 <input id = "name" name ="name" type="text" placeholder="Name:" value={this.state.name} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="accountNumber" type="text" placeholder="Account Number:" value={this.state.accountNumber} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 {/* <input name ="picture" type="text" placeholder="Picture" required={formProperties.required} disabled={formProperties.disabled}></input> */}
@@ -92,17 +95,35 @@ class UserForm extends Component{
                 <button hidden ={formProperties.hideModify} disabled={formProperties.hideModify} onClick={()=>this.updateUser()}>Update</button>
                 <button hidden ={formProperties.hideModify} disabled={formProperties.hideModify} onClick={()=>this.deleteUser()}>Delete</button>
                 </div>
-    
+                <div hidden={!formProperties.userList}>
+                    {this.displayAllUsers()}
+                </div>
             </div>
             
 		);
     }
+    displayAllUsers(){
+        const userList = this.state.userList.map((user)=>
+            <li>{"Account Number: " +user.accountNumber+", User Email: "+user.email+", Name: "+user.name}</li>
+        );
+        if(this.state.userList.length==0){
+            this.listAllUsers();
+        }
+        return(
+            <ul>
+                <li>Record count:{this.state.userList.length}</li>
+                {userList}
+            </ul>
+        );
+    }
+
     createUserForm(){
          let formProperties = {
             required:true,
             disabled:false,
             hideCreate:false,
-            hideModify:true
+            hideModify:true,
+            userList:false
          };
          
          return formProperties;
@@ -113,11 +134,18 @@ class UserForm extends Component{
            required:false,
            disabled:false,
            hideCreate:true,
-           hideModify:false
+           hideModify:false,
+           userList:false
         };
         
         return formProperties;
    }
+    userList(){
+        let formProperties = {
+            userList:true
+        }
+        return formProperties;
+    }
    
    submitForm(){
         var self = this
@@ -204,6 +232,22 @@ class UserForm extends Component{
                 alert(error);
             });
         }
+
+        listAllUsers(){
+                var self = this;
+            axios.get('/api/listAllUsers', {})
+                .then(function (res) {
+                    var data = res.data;
+                    if(data.Success ==true){
+                        self.setState({userList:data.userList});
+                    }else{
+                        alert(data.message)
+                    }
+                })
+                .catch(function (error) {
+                    alert(error);
+                });
+            }
 }
 
 export default UserForm;

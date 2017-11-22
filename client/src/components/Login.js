@@ -40,7 +40,6 @@ class Login extends Component{
         var params = this.state
         axios.post('/api/login', params)
         .then(function (res,err) {
-            console.log(res);
             var data = res.data;
             var message = data.message;            
             if(data.Success ==true){
