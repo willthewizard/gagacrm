@@ -4,12 +4,9 @@ const User = require('../models/User');
 module.exports = app => {
     app.post('/api/user', (req, res) => {
         var newUserInput = req.body;
-        // var newUser = new User(newUserInput);
         var newUser = new User(newUserInput);
-        console.log("yooo");
         newUser.save(function(err){
             if(err){
-                console.log(err);
                 if(err.code==11000){
                     res.send({Success:false,message:"User with this account number already existed"});
                 }else{
@@ -23,7 +20,6 @@ module.exports = app => {
     });
     
     app.get('/api/user', (req, res) => {
-        console.log(req.query)
         var query = {}
         var input = req.query
         if(input.name!=""){
@@ -51,7 +47,6 @@ module.exports = app => {
     });
     
     app.put('/api/user', (req, res) => {
-        console.log(req.body);
         User.findOneAndUpdate({accountNumber: req.body.accountNumber}, req.body, {upsert: true}, function(err,results){
             if(err) res.send(err);
             else{
@@ -61,11 +56,6 @@ module.exports = app => {
     });
 
     app.delete('/api/user', (req, res) => {
-        console.log("req body");
-        console.log(req.body);
-        console.log(req.query);
-        console.log(req.data);
-        console.log(req.params);
         User.remove({accountNumber: req.query.accountNumber}, function(err){
             if(err) {console.log(err);
                 res.send(err);}
@@ -82,11 +72,8 @@ module.exports = app => {
                     if(err){
                         console.log(err)
                     }else{
-                        if(results.length==0){
-                            res.send({Success:false})
-                        }else{
-                            res.send({Success:true,userList:results})
-                        }            }
+                        res.send({Success:true,userList:results});
+                    }
                 })
         }
     });

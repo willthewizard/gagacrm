@@ -111,7 +111,7 @@ class UserForm extends Component{
         }
         return(
             <ul>
-                <li>Record count:{this.state.userList.length}</li>
+                <li>User count:{this.state.userList.length}</li>
                 {userList}
             </ul>
         );
