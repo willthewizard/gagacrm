@@ -5,7 +5,7 @@ const Landing = () =>{
 	return(
 		<div style= {{textAlign:'center'}}>
 			<h1>
-				来吧老铁！
+				Welcome!
 			</h1>
 			
 		</div>
