@@ -40,6 +40,10 @@ class AdminForm extends Component{
             [name]:value
         })
     }
+
+    onBlur(event){
+        const required = event.target.required;
+    }
 	render(){
         var formProperties = this.renderContent();     
         return (
@@ -51,7 +55,7 @@ class AdminForm extends Component{
 
             </nav>
 			<div name="adminForm">
-                <input name ="email" type="email" placeholder="Email:" value={this.state.name} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
+                <input name ="email" type="email" placeholder="Email:" value={this.state.name} onChange={this.onChange.bind(this)} onBlur={this.onBlur.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="password" type="password" placeholder="Please Enter Your Password:" value={this.state.password} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input id="password2" type="password" placeholder="Please Re-Enter Your Password:" required={formProperties.required} disabled={formProperties.disabled}></input>
                 

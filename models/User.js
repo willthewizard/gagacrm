@@ -27,13 +27,13 @@ var userSchema = new Schema(
         accountNumber: {
             type: String, required: [true, 'Account Number Required'],unique: [true, 'Account Number already exists.']
         }, 
-        name: {
-            type: String, required: [true, 'Name required']
+        firstName: {
+            type: String, required: [true, 'First Name required']
+        },
+        lastName: {
+            type: String, required: [true, 'Last Name required']
         },
         photo: {
-            type: String
-        },
-        wechatCode: {
             type: String
         },
         birthday: {

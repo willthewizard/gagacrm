@@ -22,8 +22,8 @@ module.exports = app => {
     app.get('/api/user', (req, res) => {
         var query = {}
         var input = req.query
-        if(input.name!=""){
-            query.name = input.name
+        if(input.firstName!=""){
+            query.firstName = input.firstName
         }
         if(input.accountNumber!=""){
             query.accountNumber=input.accountNumber

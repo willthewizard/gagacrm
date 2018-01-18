@@ -8,9 +8,9 @@ class UserForm extends Component{
     constructor(props){
         super(props)
         this.state= {
-            name:"",
+            firstName:"",
+            lastName:"",
             accountNumber:"",
-            wechatCode:"",
             birthday:"",
             phone:"",
             email:"",
@@ -64,15 +64,15 @@ class UserForm extends Component{
 
             </nav>
 			<div name="userForm" hidden={formProperties.userList}>
-                <input id = "name" name ="name" type="text" placeholder="Name:" value={this.state.name} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
+                <input id = "firstName" name ="firstName" type="text" placeholder="First Name:" value={this.state.firstName} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
+                <input id = "lastName" name ="lastName" type="text" placeholder="Last Name:" value={this.state.lastName} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="accountNumber" type="text" placeholder="Account Number:" value={this.state.accountNumber} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 {/* <input name ="picture" type="text" placeholder="Picture" required={formProperties.required} disabled={formProperties.disabled}></input> */}
-                <input name ="wechatCode" type="text" placeholder="Wechat Code:" value={this.state.wechatCode} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="birthday" type="text" placeholder="Date of birth:" value={this.state.birthday} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="phone" type="text" placeholder="Phone:" value={this.state.phone} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="email" type="email" placeholder="Email:" value={this.state.email} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="address" type="text" placeholder="Address:" value={this.state.address} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
-                <input name ="sin" type="text" placeholder="Social Insurance Number(S.I.N.):" value={this.state.sin} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
+                <input name ="sin" type="text" placeholder="Social Insurance Number(S.I.N.):" value={this.state.sin} onChange={this.onChange.bind(this)} required="false" disabled={formProperties.disabled}></input>
                 <input name ="school" type="text" placeholder="School" value={this.state.school} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="grade" type="text" placeholder="Grade:" value={this.state.grade} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="passportExpiry" type="text" placeholder="Passport Expiry Date:" value={this.state.passportExpiry} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
@@ -104,7 +104,7 @@ class UserForm extends Component{
     }
     displayAllUsers(){
         const userList = this.state.userList.map((user)=>
-            <li>{"Account Number: " +user.accountNumber+", User Email: "+user.email+", Name: "+user.name}</li>
+            <li>{"Account Number: " +user.accountNumber+", User Email: "+user.email+", First Name: "+user.firstName+", Last Name: "+user.lastName}</li>
         );
         if(this.state.userList.length==0){
             this.listAllUsers();
@@ -150,22 +150,27 @@ class UserForm extends Component{
    submitForm(){
         var self = this
         var params = this.state
-        axios.post('/api/user', params)
-        .then(function (res,err) {
-            var data = res.data;
-            var message = data.message;            
-            if(data.Success ==true){
-                alert(message);
-                window.location.reload();                                    
-            }else if (data.Success==false){
-                alert(message);
-            }else{
-                alert();
-            }
-        })
-        .catch(function (error) {
-            alert(error);
-        });
+        var birthDate = params.birthday
+        if(birthDate!=""){
+            alert(birthDate)
+        }else{
+            axios.post('/api/user', params)
+            .then(function (res,err) {
+                var data = res.data;
+                var message = data.message;            
+                if(data.Success ==true){
+                    alert(message);
+                    window.location.reload();                                    
+                }else if (data.Success==false){
+                    alert(message);
+                }else{
+                    alert();
+                }
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+        }
    }
 
 
