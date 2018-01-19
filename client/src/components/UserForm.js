@@ -151,8 +151,8 @@ class UserForm extends Component{
         var self = this
         var params = this.state
         var birthDate = params.birthday
-        if(birthDate!=""){
-            alert(birthDate)
+        if(birthDate==""){
+            alert("birthday empty")
         }else{
             axios.post('/api/user', params)
             .then(function (res,err) {
