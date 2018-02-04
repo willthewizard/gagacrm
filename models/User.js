@@ -33,6 +33,12 @@ var userSchema = new Schema(
         lastName: {
             type: String, required: [true, 'Last Name required']
         },
+        mandarin:{
+            type:String
+        },
+        gender:{
+            type:String
+        },
         photo: {
             type: String
         },

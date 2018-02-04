@@ -30,7 +30,8 @@ class App extends Component{
 
 						{/* component for admin user management routes */}
 						<Route path="/dashboard/admin/:action" component={AdminForm} />
-						<Route path="/dashboard/user/:action" component={UserForm} />
+						<Route exact path="/dashboard/user/:action/" component={UserForm} />
+						<Route path="/dashboard/user/:action/:accountId" component={UserForm} />
 						<Route path="/dashboard/scan" component={Scan} />
 
 						<Route path="/login" component={Login}/>

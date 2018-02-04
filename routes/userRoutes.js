@@ -72,6 +72,11 @@ module.exports = app => {
                     if(err){
                         console.log(err)
                     }else{
+                        results = results.sort(function(a, b){
+                            if(a.lastName < b.lastName) return -1;
+                            if(a.lastName > b.lastName) return 1;
+                            return 0;
+                        })
                         res.send({Success:true,userList:results});
                     }
                 })

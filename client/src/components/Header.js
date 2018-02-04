@@ -38,7 +38,7 @@ class Header extends Component{
 		}
 		else if(this.props.auth.data.type=="system"){
 			return(
-				<ul class="center hide-on-med-and-down">
+				<ul className="center hide-on-med-and-down">
 				<li><Link to="/dashboard/admin/create">
 				Admin
 				</Link></li>

@@ -10,6 +10,8 @@ class UserForm extends Component{
         this.state= {
             firstName:"",
             lastName:"",
+            mandarin:"",
+            gender:"",
             accountNumber:"",
             birthday:"",
             phone:"",
@@ -24,8 +26,8 @@ class UserForm extends Component{
             usVisa:"true",
             userStatus:"",
             referrer:"",
-            userList:[]
-
+            userList:[],
+            updateValue:""
 
         }
     }
@@ -39,12 +41,38 @@ class UserForm extends Component{
             case 'create':
                 return this.createUserForm();
             case 'modify':
-                return this.workWithUser();
+                if(this.props.match.params.accountId==undefined){
+                    return this.workWithUser("null");
+                }
+                else if (this.state.updateValue=="NEED-UPDATE"){
+                    return this.workWithUser("null");
+                }
+                else{
+                    return this.workWithUser(this.props.match.params.accountId);                    
+                }
             case 'userList':
                 return this.userList();
+            case 'display':
+                return this.displayUser()
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        // state machine
+        if(this.state.updateValue==""){
+            console.log(this.state.updateValue)
+            return true
+        }else if(this.state.updateValue=="NEED-UPDATE"){
+            console.log(this.state.updateValue)
+            
+            // this.setState({updateValue :"UPDATED"})
+            return true
+        }else if(this.state.updateValue=== "UPDATED"){
+            console.log(this.state.updateValue)
+            
+            return false
+        }
+      }
     onChange(event){
         const name = event.target.name
         const value = event.target.value
@@ -66,6 +94,8 @@ class UserForm extends Component{
 			<div name="userForm" hidden={formProperties.userList}>
                 <input id = "firstName" name ="firstName" type="text" placeholder="First Name:" value={this.state.firstName} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input id = "lastName" name ="lastName" type="text" placeholder="Last Name:" value={this.state.lastName} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
+                <input id = "mandarin" name ="mandarin" type="text" placeholder="Mandarin Name:" value={this.state.mandarin} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
+                <input id = "gender" name ="gender" type="text" placeholder="Gender:" value={this.state.mandarin} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 <input name ="accountNumber" type="text" placeholder="Account Number:" value={this.state.accountNumber} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
                 {/* <input name ="picture" type="text" placeholder="Picture" required={formProperties.required} disabled={formProperties.disabled}></input> */}
                 <input name ="birthday" type="text" placeholder="Date of birth:" value={this.state.birthday} onChange={this.onChange.bind(this)} required={formProperties.required} disabled={formProperties.disabled}></input>
@@ -104,16 +134,23 @@ class UserForm extends Component{
     }
     displayAllUsers(){
         const userList = this.state.userList.map((user)=>
-            <li>{"Account Number: " +user.accountNumber+", User Email: "+user.email+", First Name: "+user.firstName+", Last Name: "+user.lastName}</li>
-        );
-        if(this.state.userList.length==0){
-            this.listAllUsers();
-        }
+        <tr><td><a href={"/dashboard/user/modify/"+user.accountNumber}>{user.accountNumber}</a></td><td>{user.firstName+" "+user.lastName}</td><td>{user.mandarin}</td><td>{user.gender}</td><td>{user.birthday}</td><td>{user.trvExpiry}</td></tr>
+    );
+    if(this.state.userList.length==0){
+        this.listAllUsers();
+    }
         return(
-            <ul>
-                <li>User count:{this.state.userList.length}</li>
+            <table border="1" className="bordered">
+            <thead  className="bordered">
+            {/* {<tr>Drip count:{this.state.DripList.length}</tr>} */}
+            <tr className="bordered" border="1">
+                <th>Account Number</th><th>Name</th> <th>Chinese Name</th> <th>Gender</th> <th>Birthday</th> <th>Expiry date</th> 
+            </tr>
+            </thead>
+            <tbody>
                 {userList}
-            </ul>
+            </tbody>
+            </table>
         );
     }
 
@@ -129,7 +166,7 @@ class UserForm extends Component{
          return formProperties;
     }
 
-    workWithUser(){
+    workWithUser(accountId){
         let formProperties = {
            required:false,
            disabled:false,
@@ -137,9 +174,24 @@ class UserForm extends Component{
            hideModify:false,
            userList:false
         };
-        
+        if(accountId!="null"){
+            this.findUserById(accountId)
+        }
         return formProperties;
    }
+
+   displayUser(){
+    let formProperties = {
+       required:false,
+       disabled:false,
+       hideCreate:true,
+       hideModify:false,
+       userList:false
+    };
+    
+    return formProperties;
+}
+
     userList(){
         let formProperties = {
             userList:true
@@ -195,7 +247,28 @@ class UserForm extends Component{
                 alert(error);
             });
         }
-
+        findUserById(accountId){
+            var self = this
+            var params = this.state
+            params.accountNumber = accountId
+            axios.get('/api/user', {
+                params
+            })
+            .then(function (res) {
+                
+                var data = res.data;
+                if(data.Success ==true){
+                    var user = data.user
+                    user.updateValue = "NEED-UPDATE"
+                    self.setState(user);
+                }else{
+                    alert("No results found")
+                }
+            })
+            .catch(function (error) {
+                alert(error);
+            });
+        }
         updateUser(){
             var self = this
             var params = this.state
